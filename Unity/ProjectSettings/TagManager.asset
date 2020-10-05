@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Canvas
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Canvas
+    uniqueID: 1740616193
+    locked: 0
+  - name: Background
+    uniqueID: 2130211069
     locked: 0

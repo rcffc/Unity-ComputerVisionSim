@@ -32,15 +32,16 @@ public class ImageSynthesis : MonoBehaviour
     public bool saveOpticalFlow;
     public string filepath = "..\\Captures";
     public string filename = "test.png";
+    public Camera movingCamera;
 
     // pass configuration
     private CapturePass[] capturePasses = new CapturePass[] {
-        new CapturePass() { name = "_img" },
-        new CapturePass() { name = "_id", supportsAntialiasing = false },
-        new CapturePass() { name = "_layer", supportsAntialiasing = false },
         new CapturePass() { name = "_depth" },
-        new CapturePass() { name = "_normals" },
-        new CapturePass() { name = "_flow", supportsAntialiasing = false, needsRescale = true } // (see issue with Motion Vectors in @KNOWN ISSUES)
+        //new CapturePass() { name = "_img" },
+        //new CapturePass() { name = "_id", supportsAntialiasing = false },
+        //new CapturePass() { name = "_layer", supportsAntialiasing = false },
+        //new CapturePass() { name = "_normals" },
+        //new CapturePass() { name = "_flow", supportsAntialiasing = false, needsRescale = true } // (see issue with Motion Vectors in @KNOWN ISSUES)
     };
 
     struct CapturePass
@@ -67,10 +68,8 @@ public class ImageSynthesis : MonoBehaviour
         if (!opticalFlowShader)
             opticalFlowShader = Shader.Find("Hidden/OpticalFlow");
 
-        // use real camera to capture final image
-        capturePasses[0].camera = GetComponent<Camera>();
-        for (int q = 1; q < capturePasses.Length; q++)
-            capturePasses[q].camera = CreateHiddenCamera(capturePasses[q].name);
+        capturePasses[0].camera = movingCamera;
+        
 
         OnCameraChange();
         OnSceneChange();
@@ -136,20 +135,20 @@ public class ImageSynthesis : MonoBehaviour
     public void OnCameraChange()
     {
         int targetDisplay = 1;
-        var mainCamera = GetComponent<Camera>();
+        //var mainCamera = GetComponent<Camera>();
         foreach (var pass in capturePasses)
         {
-            if (pass.camera == mainCamera)
-                continue;
+            //if (pass.camera == movingCamera)
+            //    continue;
 
             // cleanup capturing camera
             pass.camera.RemoveAllCommandBuffers();
 
             // copy all "main" camera parameters into capturing camera
-            pass.camera.CopyFrom(mainCamera);
+            pass.camera.CopyFrom(movingCamera);
 
             // set targetDisplay here since it gets overriden by CopyFrom()
-            pass.camera.targetDisplay = targetDisplay++;
+            //pass.camera.targetDisplay = targetDisplay++;
         }
 
         // cache materials and setup material properties
@@ -158,11 +157,11 @@ public class ImageSynthesis : MonoBehaviour
         opticalFlowMaterial.SetFloat("_Sensitivity", opticalFlowSensitivity);
 
         // setup command buffers and replacement shaders
-        SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacementMode.ObjectId);
-        SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacementMode.CatergoryId);
-        SetupCameraWithReplacementShader(capturePasses[3].camera, uberReplacementShader, ReplacementMode.DepthCompressed, Color.white);
-        SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacementMode.Normals);
-        SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
+   //     SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacementMode.ObjectId);
+    //    SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacementMode.CatergoryId);
+        SetupCameraWithReplacementShader(capturePasses[0].camera, uberReplacementShader, ReplacementMode.DepthCompressed, Color.white);
+     //   SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacementMode.Normals);
+     //   SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
     }
 
 
