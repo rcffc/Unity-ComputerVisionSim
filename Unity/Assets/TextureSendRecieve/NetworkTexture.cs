@@ -20,6 +20,7 @@ namespace TextureSendReceive {
         private List<TcpClient> clients = new List<TcpClient>();
         private bool stop = false;
 
+        public string IP = "127.0.0.1";
         public int port = 5000;
         public Encoding encoding = Encoding.JPG;
 
@@ -55,7 +56,7 @@ namespace TextureSendReceive {
             }
 
             // Connect to the server
-            listner = new TcpListener(IPAddress.Any, port);
+            listner = new TcpListener(IPAddress.Parse(IP), port);
 
             listner.Start();
 

@@ -5,21 +5,20 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace TextureSendReceive {
-	[RequireComponent(typeof(Camera), typeof(TextureSender))]
+	[RequireComponent(typeof(TextureSender))]
 	public class CameraSender : MonoBehaviour {
-		Camera camera;
+		public Camera camera;
 		TextureSender sender;
 		Texture2D sendTexture;
-		RenderTexture videoTexture;
 
 		public RawImage image;
 
 		// Use this for initialization
 		void Start () {
-			camera = GetComponent<Camera>();
+			// camera = GetComponent<Camera>();
 			sender = GetComponent<TextureSender>();
 
-			sendTexture = new Texture2D((int)camera.targetTexture.width, (int)camera.targetTexture.width);
+			sendTexture = new Texture2D((int)camera.targetTexture.width, (int)camera.targetTexture.height);
 			
 			// Set send texture
 			sender.SetSourceTexture(sendTexture);
