@@ -23,8 +23,16 @@ inline float Linear01FromEyeToLinear01FromNear(float depth01)
 {
     float near = _ProjectionParams.y;
     float far = _ProjectionParams.z;
-    return (depth01 - near/far) * (1 + near/far);
+    float z = depth01 * 2.0 - 1.0; // back to NDC 
+    return (2.0 * near * far) / (far + near - z * (far - near));	
 }
+
+// inline float Linear01FromEyeToLinear01FromNear(float depth01)
+// {
+//     float near = _ProjectionParams.y;
+//     float far = _ProjectionParams.z;
+//     return (depth01 - near/far) * (1 + near/far);
+// }
 
 float4 Output(float depth01, float3 normal)
 {

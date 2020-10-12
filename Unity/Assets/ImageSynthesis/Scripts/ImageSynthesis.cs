@@ -69,7 +69,7 @@ public class ImageSynthesis : MonoBehaviour
             opticalFlowShader = Shader.Find("Hidden/OpticalFlow");
 
         capturePasses[0].camera = movingCamera;
-        
+
 
         OnCameraChange();
         OnSceneChange();
@@ -157,11 +157,11 @@ public class ImageSynthesis : MonoBehaviour
         opticalFlowMaterial.SetFloat("_Sensitivity", opticalFlowSensitivity);
 
         // setup command buffers and replacement shaders
-   //     SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacementMode.ObjectId);
-    //    SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacementMode.CatergoryId);
+        //     SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacementMode.ObjectId);
+        //    SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacementMode.CatergoryId);
         SetupCameraWithReplacementShader(capturePasses[0].camera, uberReplacementShader, ReplacementMode.DepthCompressed, Color.white);
-     //   SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacementMode.Normals);
-     //   SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
+        //   SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacementMode.Normals);
+        //   SetupCameraWithPostShader(capturePasses[5].camera, opticalFlowMaterial, DepthTextureMode.Depth | DepthTextureMode.MotionVectors);
     }
 
 
